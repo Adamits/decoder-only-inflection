@@ -1,0 +1,3 @@
+[console_scripts]
+yoyodyne-predict = yoyodyne.predict:main
+yoyodyne-train = yoyodyne.train:main

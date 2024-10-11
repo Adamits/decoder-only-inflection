@@ -1,0 +1,44 @@
+stable baselines 3 lib.
+
+Simple Gymnasium example:
+
+```
+# Make the env with render_mode???
+env = gym.make("LunarLander-v2", render_mode="human")
+# Is an observation like a reward? info is a dict
+# UPDATE: I think an observation is the updated state. From this, we can get the reward.
+observation, info = env.reset()
+
+# above got initial env stuff, now we loop and learn with RL
+for _ in range(1000):
+    # sample an action from the policy (see comment below, which confirms observation and info is like the state)
+    action = env.action_space.sample()  # agent policy that uses the observation and info
+    # Then we step our agent and get a new state and reward.
+    observation, reward, terminated, truncated, info = env.step(action)
+
+    if terminated or truncated:
+        observation, info = env.reset()
+
+env.close()
+```
+
+SETUP 1
+    - State reset: a set of params for the infleciton model
+        - since the model is static, I guess we can consider the state to be ... wait now unsure?
+    - Step: The state (which is static) + reward (-val loss)
+    - policy space: a set of masking methods.
+    - action space:  be a discrete selection between policies.
+
+    Later notes after looking at gymnasium:
+        - Policy: which baseline strategy? (e.g. iid, prefix, suffix, sample from LM, sample from morfessor)
+        - Action: which characters to mask? (TODO: should it actually be a per-character actin mask or not?)
+        - State: The word and/or some aspect of the task model (e.g. step number)
+        - State reset: as we said above, we will need to reset the task model a lot to get stable results.
+            - This will just give us some (probably warmed up) set of params for the task model.
+
+SETUP 2
+    -   Similar to 1: BUT here our policy is a function that does something like binary classification of characters to mask.
+    - Action space is something like the actual
+
+THought: state/reward may want to also track how long we have trained for.
+RL algo: PPO, REINFORCE, actor-critic
